@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta charset="UTF-8" />
+    <link rel="icon" href="icons/faviicon.png" type="image/x-icon">
+  <title>SmartBuy - Login/Signup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+ body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Animated gradient */
+  background: linear-gradient(270deg, #1e293b, #0f172a, #6b94ed, #1e3a8a);
+  background-size: 800% 800%;
+  animation: gradientFade 15s ease infinite;
+}
+
+/* Keyframes for smooth cross-fade */
+@keyframes gradientFade {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+   .container {
+  background: linear-gradient(to bottom, #d2e1fe, #f9f0f0);
+  padding: 30px 25px;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 12px;
+  position: relative;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.15);
+}
+
+    .back-home {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 14px;
+      color: #007bff;
+      cursor: pointer;
+    }
+    h2 {
+      text-align: center;
+      color: #0084ff;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      background: #0084ff;
+      color: rgb(218, 228, 250);
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .switch-link {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 13px;
+    }
+    .switch-link a {
+      color: #0084ff;
+      cursor: pointer;
+    }
+    .form-helper {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    .falling {
+  position: fixed;
+  top: -50px;
+  width: 20px;
+  height: 20px;
+  background-color: #ffc107; /* Grocery-like color */
+  border-radius: 50%; /* Makes it look like fruit/veggie */
+  animation: fall linear infinite;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+.logo-heading {
+  text-align: center;       /* centers the image horizontally */
+  margin: 20px 0;
+}
+
+.logo-img {
+  max-width: 200px;         /* adjust size as needed */
+  height: auto;             /* keeps aspect ratio */
+  display: inline-block;    /* keeps it inline so text-align works */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px; /* ✅ ensures no zoom on focus */
+}
+
+
+    #message-box {
+      background: #dff0d8;
+      color: #3c763d;
+      padding: 10px;
+      border-radius: 6px;
+      text-align: center;
+      display: none;
+      margin-bottom: 10px;
+      animation: fadeInOut 3s linear forwards;
+    }
+    @keyframes fadeInOut {
+      0% {opacity: 0;}
+      10% {opacity: 1;}
+      90% {opacity: 1;}
+      100% {opacity: 0;}
+    }
+.spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #0084ff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+    #success-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    #success-overlay div {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      font-size: 18px;
+      color: green;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="container" id="auth-box">
+  <div class="back-home" onclick="goHome()">⬅️ Back to Home</div>
+  <div class="logo-heading">
+  <img src="images/loginlogo.png" alt="SMART BUY" class="logo-img">
+</div>
+
+
+  <div id="message-box">✅ Message</div>
+
+  <!-- Login Form -->
+  <form id="login-form">
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="text" id="login-mobile" required />
+    </div>
+
+    <div class="form-group" id="login-password-group">
+      <label>Password</label>
+      <input type="password" id="login-password" />
+    </div>
+
+    <div class="form-group hidden" id="login-otp-group">
+      <label>OTP</label>
+      <input type="text" id="login-otp" />
+    </div>
+
+    <div class="form-group hidden" id="login-generate-btn">
+      <button type="button" onclick="sendLoginOTP()">Generate OTP</button>
+    </div>
+
+    <div class="form-helper" id="login-helper">
+      <span>Forget Password?</span>
+      
+    </div>
+
+    <button type="submit">Login</button>
+    <div class="switch-link">
+      New user? <a onclick="showSignup()">Sign up</a>
+    </div>
+  </form>
+
+  <!-- Signup Form -->
+  <form id="signup-form" class="hidden">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" id="signup-name" required />
+    </div>
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="text" id="signup-mobile" required />
+    </div>
+    
+    
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="signup-pass" required />
+    </div>
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" id="signup-confirm" required />
+    </div>
+    <button type="submit">Sign Up</button>
+    <div class="switch-link">
+      Already have an account? <a onclick="showLogin()">Login</a>
+    </div>
+  </form>
+</div>
+
+<!-- Signup Success Overlay -->
+<div id="success-overlay">
+  <div>✅ Signup Successful!<br><br>Redirecting to Login...</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  // 🔹 Supabase setup
+  
+  const SUPABASE_URL = "https://pjgotlzuzqnpconigyie.supabase.co";
+  const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBqZ290bHp1enFucGNvbmlneWllIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTY5MTk3MzksImV4cCI6MjA3MjQ5NTczOX0.sVyIV9RNiV9bxALc0MbF6O8eRFx92x4RV2EPH_soVhw";
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  let loginWithOTP = false;
+
+  function showSignup() {
+    document.getElementById("login-form").classList.add("hidden");
+    document.getElementById("signup-form").classList.remove("hidden");
+  }
+
+  function showLogin() {
+    document.getElementById("signup-form").classList.add("hidden");
+    document.getElementById("login-form").classList.remove("hidden");
+  }
+
+  function goHome() {
+    window.location.href = "index.html";
+  }
+
+  function showMessage(msg) {
+    const box = document.getElementById("message-box");
+    box.innerText = msg;
+    box.style.display = "block";
+    setTimeout(() => {
+      box.style.display = "none";
+    }, 3000);
+  }
+
+ // 🔹 SIGNUP
+document.getElementById("signup-form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+  const name = document.getElementById("signup-name").value.trim();
+  const mobile = document.getElementById("signup-mobile").value.trim();
+  const pass = document.getElementById("signup-pass").value;
+  const confirm = document.getElementById("signup-confirm").value;
+
+  if (pass !== confirm) {
+    showMessage("❌ Passwords do not match!");
+    return;
+  }
+
+  // ✅ Show loader
+  document.getElementById("loading-overlay").style.display = "flex";
+
+  try {
+    // 🔍 1. Check if this mobile number already exists
+    const { data, error: checkError } = await supabase
+      .from("users")
+      .select("mobile")
+      .eq("mobile", mobile)
+      .maybeSingle(); // returns null if not found
+
+    if (checkError) throw checkError;
+
+    if (data) {
+      // Mobile already exists
+      showMessage("❌ Mobile number already registered!");
+      document.getElementById("loading-overlay").style.display = "none";
+      return;
+    }
+
+    // ✨ 2. Insert new user
+    const { error: insertError } = await supabase.from("users").insert([
+      { name, mobile, password: pass }
+    ]);
+
+    document.getElementById("loading-overlay").style.display = "none";
+
+    if (insertError) {
+      showMessage("❌ Signup failed: " + insertError.message);
+    } else {
+      showMessage("✅ Signup successful!");
+      document.getElementById("success-overlay").style.display = "flex";
+      setTimeout(() => {
+        document.getElementById("success-overlay").style.display = "none";
+        showLogin();
+      }, 3000);
+    }
+  } catch (err) {
+    document.getElementById("loading-overlay").style.display = "none";
+    showMessage("❌ Error: " + err.message);
+  }
+});
+
+
+  // 🔹 LOGIN
+  document.getElementById("login-form").addEventListener("submit", async function (e) {
+    e.preventDefault();
+    const mobile = document.getElementById("login-mobile").value.trim();
+
+    // Fetch user by mobile
+    const { data: users, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("mobile", mobile)
+      .single();
+
+    if (error || !users) {
+      showMessage("❌ You need to signup first!");
+      return;
+    }
+
+    if (loginWithOTP) {
+      const otp = document.getElementById("login-otp").value;
+      if (otp === "1234") {
+        showMessage("✅ Login Successful with OTP");
+
+        const userObj = { name: users.name, mobile: users.mobile };
+        localStorage.setItem("loggedInUser", JSON.stringify(userObj));
+        localStorage.setItem("userProfile", JSON.stringify(userObj));
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+      } else {
+        showMessage("❌ Invalid OTP (try '1234')");
+      }
+    } else {
+      const pass = document.getElementById("login-password").value;
+      if (users.password === pass) {
+        showMessage("✅ Login Successful");
+
+        const userObj = { name: users.name, mobile: users.mobile };
+        localStorage.setItem("loggedInUser", JSON.stringify(userObj));
+        localStorage.setItem("userProfile", JSON.stringify(userObj));
+
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+      } else {
+        showMessage("❌ Incorrect Password");
+      }
+    }
+  });
+
+</script>
+<!-- OTP Popup -->
+<div id="otp-popup" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;">
+  <div style="
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 250px;">
+    <h3>Your OTP</h3>
+    <div id="otp-value" style="
+      font-size: 22px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #0084ff;">1234</div>
+    <button onclick="closeOTPPopup()" style="
+      padding: 8px 15px;
+      background: #0084ff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;">OK</button>
+  </div>
+</div>
+<!-- Loading Overlay -->
+<div id="loading-overlay" style="
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(255,255,255,0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;">
+  <div class="spinner"></div>
+</div>
+
+</body>
+</html>
